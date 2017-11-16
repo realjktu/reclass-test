@@ -33,7 +33,8 @@ classes:
 - system.horizon.server.single
 - system.bind.server.single
 - system.barbican.server.single
-- service.barbican.server.plugin.simple_crypto
+- service.barbican.server.plugin.dogtag
+- service.dogtag.server.single
 - system.designate.server.single
 - system.designate.server.backend.bind
 parameters:
@@ -122,6 +123,7 @@ parameters:
     openstack_public_neutron_subnet_allocation_end: 192.168.130.254
     barbican_simple_crypto_kek: YWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXoxMjM0NTY=
     barbican_integration_enabled: False
+    barbican_dogtag_nss_password: workshop
   galera:
     master:
       members: ~
@@ -134,8 +136,7 @@ parameters:
       ks_notifications_enable: True
       store:
         software:
-          crypto_plugin: simple_crypto
-          store_plugin: store_crypto
+          store_plugin: dogtag_crypto
           global_default: True
   neutron:
     server:
@@ -179,3 +180,19 @@ parameters:
     server:
       barbican:
         enabled: ${_param:barbican_integration_enabled}
+  dogtag:
+    server:
+      ldap_hostname: ${linux:network:fqdn}
+      ldap_dn_password: workshop
+      export_pem_file_path: /etc/barbican/kra_admin_cert.pem
+      default_config_options:
+        pki_ds_hostname: ${linux:network:fqdn}
+        pki_admin_password: workshop
+        pki_backup_password: workshop
+        pki_client_database_password: workshop
+        pki_client_pkcs12_password: workshop
+        pki_clone_pkcs12_password: workshop
+        pki_ds_password: workshop
+        pki_token_password: workshop
+        pki_security_domain_name: EXAMPLE
+        pki_security_domain_password: workshop
