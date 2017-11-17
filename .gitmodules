@@ -1,3 +1,0 @@
-[submodule "classes/system"]
-	path = classes/system
-	url = https://gerrit.mcp.mirantis.net/salt-models/reclass-system
